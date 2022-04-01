@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue Session Restore Test</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+            }
+        }
+    </script>
+    <style>
+        html {
+            font-family: Arial, 'Droid Sans', 'sans-serif';
+        }
+        body {
+            margin: 2rem;
+        }
+
+        input[type=text] {
+            display: block;
+            margin: 1rem 0;
+        }
+        label {
+            display: block;
+        }
+        .fakeLink {
+            text-decoration: underline;
+            color: darkblue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+    <div id="app">
+        <h1>Test Form</h1>
+
+        <div v-show="didSubmit">
+            Your response has been tallied. Thank you!
+            <div @click="resetForm()" class="fakeLink">Click here to un-submit & reset form</div>
+        </div>
+
+        <form v-show="!didSubmit">
+            <h2>Input some information...</h2>
+
+            <input type="text" placeholder="What is your favorite fruit?" v-model="favFruit">
+            <textarea id="sometext" placeholder="What do you like about this fruit?" v-model="favFruitDetail"></textarea>
+
+            <h3>Fruits:</h3>
+            <fieldset>
+                <label v-for="fruit in fruits" ><input type="checkbox" :value="fruit" :checked="selectedFruits.includes(fruit)" v-model="selectedFruits">{{fruit}}</label>
+            </fieldset>
+
+            <h2><label for="appletypes">Types of apple:</label></h2>
+            <fieldset>
+                <select id="appletypes" v-model="selectedApple">
+                    <option value="">Select an apple type</option>
+                    <option v-for="(label, id) in appleTypes" :value="id" :selected="id === selectedApple">{{ label }}</option>
+                </select>
+            </fieldset>
+
+            <h2>Show grape colors?</h2>
+            <fieldset>
+                <label><input type="radio" name="showcolors" value="1" :checked="showColors" v-model="showColors">Yes</label>
+                <label><input type="radio" name="showcolors" value="0" :checked="!showColors" v-model="showColors">No</label>
+            </fieldset>
+
+            <fieldset v-show="showColors">
+                <caption>Grape colors:</caption>
+                <label v-for="(label, key) in grapeColors" >
+                    <input type="radio" name="grape" :value="key" v-model="selectedGrapeColor">
+                    {{label}}
+                </label>
+            </fieldset>
+
+            <div style="margin:1rem 0"><button type="button" @click="submitForm()">Submit</button></div>
+        </form>
+    </div>
+
+    <script type="module" src="js_modules/index.js"></script>
+</html>
